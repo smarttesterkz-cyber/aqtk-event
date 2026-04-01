@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профильді өңдеу</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo.png">
+    <style>
+        body {
+            background-color: #f4f7fe;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-card {
+            width: 90%; 
+            max-width: 800px; /* Увеличенная ширина */
+            position: relative;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .back-link {
+            position: absolute;
+            left: 20px;
+            top: 25px;
+            color: #333;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Кнопка теперь синего цвета */
+        .main-auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .main-auth-btn:hover {
+            background-color: #0056b3; /* Темно-синий при наведении */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+
+            <h2 class="page-title">Профильді өңдеу</h2>
+
+            <div class="form-group">
+                <label>Аты-жөніңіз:</label>
+                <input type="text" id="edit-name-input">
+            </div>
+
+            <button class="main-auth-btn" onclick="saveChanges()">Сақтау</button>
+        </div>
+    </div>
+
+    <script>
+        const email = localStorage.getItem('currentUser');
+        const userData = JSON.parse(localStorage.getItem(email));
+        
+        if (userData) {
+            document.getElementById('edit-name-input').value = userData.name;
+        } else if (!email) {
+            window.location.href = 'index.html';
+        }
+
+        function saveChanges() {
+            const newName = document.getElementById('edit-name-input').value.trim();
+            if (newName && email) {
+                const updatedData = { ...userData, name: newName };
+                localStorage.setItem(email, JSON.stringify(updatedData));
+                alert('Деректер сақталды!');
+                window.location.href = 'index.html';
+            } else {
+                alert('Аты-жөніңізді енгізіңіз');
+            }
+        }
+    </script>
+</body>
+
+</html>

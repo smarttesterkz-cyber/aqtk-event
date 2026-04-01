@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQTK - Авторизация</title>
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1E3A8A;
+        }
+        .container {
+            background: white; padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px; width: 90%; text-align: center;
+        }
+        .header { display: flex; align-items: center; justify-content: flex-start; margin-bottom: 30px; gap: 15px; }
+        .college-logo { width: 60px; height: 60px;  border-radius: 50%; object-fit: cover;overflow: hidden; background: white; display: block; }
+        .title { font-size: 20px; font-weight: bold; color: #1E3A8A; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; }
+        input {
+            width: 100%; padding: 12px; border: 2px solid #E3F2FD;
+            border-radius: 10px; font-size: 16px; transition: 0.3s;
+        }
+        input:focus { border-color: #3498db; outline: none; }
+        button {
+            width: 100%; padding: 14px; background: #3498db; color: white;
+            border: none; border-radius: 10px; font-size: 18px;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        button:hover { background: #2980b9; }
+        .forgot, .register-link {
+            color: #3498db; text-decoration: none; font-size: 14px;
+            display: block; margin: 15px 0; cursor: pointer;
+        }
+        .switch-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #E3F2FD; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="aqtk_icon.jpeg" alt="AQTK" class="college-logo">
+            <div class="title">AQTK Іс-шаралар</div>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Поштаңыз:</label>
+                <input type="email" id="loginEmail" placeholder="example@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label>Құпиясөз:</label>
+                <input type="password" id="loginPassword" placeholder="Құпиясөз" required>
+            </div>
+            <button type="submit">Кіру</button>
+            <div class="switch-form">
+                <a class="register-link" onclick="showRegister()">Аккаунт жоқ па? Тіркеліңіз</a>
+            </div>
+        </form>
+
+        <form id="registerForm" style="display: none;">
+            <div class="form-group">
+                <label>Gmail поштаңыз:</label>
+                <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label>Құпиясөз:</label>
+                <input type="password" id="regPassword" placeholder="Құпиясөз" required>
+            </div>
+            <div class="form-group">
+                <label>Атыңыз:</label>
+                <input type="text" id="regName" placeholder="Аты-жөніңіз" required>
+            </div>
+
+            <button type="submit" id="regBtn">Тіркелу</button>
+            <a class="forgot" onclick="showLogin()">Кіруге қайту</a>
+        </form>
+    </div>
+
+    <script>
+        let generatedCode = null;
+
+        function getUser(email) {
+            return JSON.parse(localStorage.getItem(email));
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        // Логика входа
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = getUser(email);
+
+            if (user && user.password === password) {
+                localStorage.setItem('currentUser', email);
+                window.location.href = 'index.html';
+            } else {
+                alert('Қате пошта немесе құпиясөз!');
+            }
+        });
+
+        // Логика регистрации
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const name = document.getElementById('regName').value;
+
+    // 1. Проверяем, не занят ли email
+    if (getUser(email)) {
+        alert('Бұл пошта тіркелген!');
+        return;
+    }
+
+// 2. Определяем роль (теперь и для вашей новой почты)
+const role = (email === 'dosanova2021@icloud.com') ? 'admin' : 'user';
+
+    // 3. Сохраняем пользователя в базу (localStorage)
+    localStorage.setItem(email, JSON.stringify({password, name, role}));
+    
+    // 4. Сразу авторизуем
+    localStorage.setItem('currentUser', email);
+    
+    alert('Тіркелу сәтті өтті!');
+    window.location.href = 'index.html';
+});
+    </script>
+</body>
+</html>

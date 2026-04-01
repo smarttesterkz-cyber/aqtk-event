@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQTK Іс-шаралар</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo.png">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <img src="aqtk_icon.jpeg" alt="Logo" class="logo-img">
+            </div>
+            <span>AQTK</span>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-link active" data-page="main"><i class="fas fa-home"></i> Басты бет</a>
+            <a href="#" class="nav-link" data-page="events"><i class="fas fa-calendar-alt"></i> Іс-шаралар</a>
+            <a href="#" class="nav-link" data-page="about"><i class="fas fa-info-circle"></i> Біз туралы</a>
+            <a href="#" class="nav-link" data-page="contact"><i class="fas fa-phone"></i> Байланыс</a>
+            <a href="#" class="nav-link" data-page="profile"><i class="fas fa-user"></i> Профиль</a>
+        </nav>
+    </header>
+
+
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
+    <main id="main-page" class="page active">
+        <section class="calendar-section">
+            <h2 class="section-title">Апта Күнтізбесі</h2>
+            <div class="mini-calendar">
+                <button class="calendar-arrow" id="prev-week"><i class="fas fa-chevron-left"></i></button>
+                <div class="calendar-content" id="calendar-week">
+                    <div class="days-labels">
+                        <div>Дс</div>
+                        <div>Сс</div>
+                        <div>Ср</div>
+                        <div>Бс</div>
+                        <div>Жм</div>
+                        <div>Сн</div>
+                        <div>Жс</div>
+                    </div>
+                    <div class="calendar-week"></div>
+                </div>
+                <button class="calendar-arrow" id="next-week"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+
+        <section class="events-preview">
+            <h2 class="section-title">Іс-шаралар</h2>
+
+            <div class="search-section">
+                <input type="text" id="search-events" placeholder="Іс-шара іздеу...">
+                <button class="search-btn" onclick="applyFilters()">Іздеу</button>
+                <button id="clear-filters" onclick="clearSearch()">Тазалау</button>
+            </div>
+
+            <div class="categories-grid">
+                <button class="cat-btn active" data-category="all">БАРЛЫҒЫ</button>
+                <button class="cat-btn" data-category="concert">КОНЦЕРТ</button>
+                <button class="cat-btn" data-category="exhibition">КӨРМЕ</button>
+                <button class="cat-btn" data-category="sport">СПОРТ</button>
+                <button class="cat-btn" data-category="festival">ФЕСТИВАЛЬ</button>
+            </div>
+            <div style="height: 30px;" aria-hidden="true"></div>
+
+            <div class="events-cards" id="events-preview"></div>
+            <div id="events-container" class="events-grid"></div>
+
+            <div id="more-events-wrapper" style="text-align: center; margin-bottom: 40px; display: none;">
+                <button class="register-btn" onclick="goToEventsPage()"
+                    style="width: auto; padding: 12px 40px; background: #3498db; border-radius: 12px;">
+                    Барлығын көру <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            </div>
+        </section>
+
+    </main>
+
+    <main id="events-page" class="page">
+        <section class="events-preview">
+            <h2 class="section-title">Барлық іс-шаралар</h2>
+            <div class="events-cards" id="events-list">
+            </div>
+        </section>
+    </main>
+
+    <div id="contact-page" class="page">
+        <div style="height: 33px;" aria-hidden="true"></div>
+        <div class="contact-container">
+            <h2 class="section-title">Байланыс</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Мекен-жай:</strong>
+                    <p>
+                        <a href="https://2gis.kz/aktobe/geo/70000001032743213" target="_blank" class="address-link">
+                            Ақтөбе қ., Ватутина 1 көшесі.
+                        </a>
+                    </p>
+                    <p>Ақтөбе құрылыс-техникалық колледжі.</p>
+                </div>
+
+                <div class="contact-item">
+                    <strong>Телефондар:</strong>
+                    <p><a href="tel:+77771234567" style="text-decoration: none; color: inherit;">+7 (777) 123 45 67</a>
+                    </p>
+                    <p><a href="tel:+77052122212" style="text-decoration: none; color: inherit;">+7 (705) 212 2212</a>
+                    </p>
+                </div>
+
+                <div class="contact-item">
+                    <strong>Email:</strong>
+                    <p><a href="mailto:aqtk.events@mail.ru"
+                            style="text-decoration: none; color: #3498db;">aqtk.events@mail.ru</a></p>
+                    <p><a href="mailto:aqtk.support@mail.ru"
+                            style="text-decoration: none; color: #3498db;">aqtk.support@mail.ru</a></p>
+                </div>
+
+                <div class="contact-item">
+                    <strong>Жұмыс уақыты:</strong>
+                    <p>Дс-Жм: 08:00 – 18:00</p>
+                    <p>Сб: 09:00 – 13:00</p>
+                    <p>Жс: Демалыс</p>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://instagram.com/aqtk_aqtobe" class="social-icon" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" width="20" alt="Instagram">
+                        Instagram
+                    </a>
+
+                    <a href="https://www.youtube.com/@qurulys" class="social-icon" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" width="20" alt="YouTube">
+                        YouTube
+                    </a>
+
+                    <a href="https://tiktok.com/@aqtk_aqtobee" class="social-icon" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="20" alt="TikTok">
+                        TikTok
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3><strong>Хабарласу</strong></h3>
+                <form id="feedback-form">
+                    <input type="text" placeholder="Аты-жөні" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="text" placeholder="Тақырып" required>
+                    <textarea placeholder="Хабарлама" rows="4" required></textarea>
+                    <button type="submit" class="reg-btn">Жіберу</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <section id="about-page" class="page">
+        <div class="about-card">
+            <div class="about-hero">
+                <h1 class="about-header-text">Біз туралы</h1>
+            </div>
+            <div class="about-body">
+                <p class="about-description">
+                    Бұл бөлім колледжде өтетін іс-шараларға студенттерді тіркеу және қатысуын ұйымдастыру үшін арналған.
+                    Мұнда әрбір студент өзіне қызықты іс-шараны таңдап, онлайн түрде тіркеліп, қатысу мүмкіндігіне ие
+                    болады.
+                </p>
+                <p class="about-description">
+                    Жүйе арқылы пайдаланушылар алдағы іс-шаралар туралы толық ақпарат алып, олардың уақыты, орны және
+                    бағдарламасымен таныса алады. Тіркелу процесі қарапайым және ыңғайлы: студент өз деректерін енгізіп,
+                    таңдаған іс-шараға қатысуын растайды.
+                </p>
+                <p class="about-description">
+                    Біздің мақсатымыз – студенттердің колледж өміріне белсенді қатысуына жағдай жасау, олардың
+                    шығармашылық және әлеуметтік белсенділігін арттыру.
+                </p>
+                <p class="about-description">
+                    Бұл платформа – студенттер мен ұйымдастырушылар арасындағы байланысты жеңілдететін, іс-шараларды
+                    тиімді жоспарлауға көмектесетін заманауи жүйе.
+                </p>
+
+                <div class="about-divider">
+                    <span class="divider-line"></span>
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="divider-line"></span>
+                </div>
+
+                <h2 class="about-header-text secondary">Біздің миссиямыз</h2>
+
+                <p class="about-description">
+                    Біздің миссиямыз – колледж студенттерінің іс-шараларға қатысуын жеңілдету, олардың белсенділігін
+                    арттыру және студенттік өмірді қызықты әрі мазмұнды ету.
+                </p>
+                <p class="about-description">
+                    Біз заманауи және ыңғайлы тіркеу жүйесі арқылы әрбір студентке өзіне ұнайтын іс-шараны оңай таңдап,
+                    қатысуға мүмкіндік береміз. Платформамыз студенттер мен ұйымдастырушылар арасындағы байланысты
+                    нығайтып, іс-шараларды тиімді жоспарлауға көмектеседі.
+                </p>
+                <p class="about-description">
+                    Біздің басты құндылықтарымыз – қолжетімділік, ыңғайлылық және студенттердің дамуына қолдау көрсету.
+                    Біз әрбір студент өз қабілетін ашып, колледж өмірінің белсенді қатысушысы бола алатындай орта
+                    қалыптастыруды мақсат етеміз.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main id="profile-page" class="page">
+        <div style="height: 33px;" aria-hidden="true"></div>
+        <section class="profile-container">
+            <div id="guest-view" class="auth-card">
+                <div class="profile-header-ui">
+                    <i class="fas fa-user-circle guest-icon"></i>
+                    <h2>Қош келдіңіз!</h2>
+                    <p>Іс-шараларға тіркелу үшін жүйеге кіріңіз</p>
+                </div>
+                <div class="auth-options">
+                    <button class="main-auth-btn" onclick="window.location.href='auth.html'">
+                        <i class="fas fa-sign-in-alt"></i> Кіру немесе Тіркелу
+                    </button>
+                </div>
+            </div>
+
+            <div id="user-view" class="profile-card" style="display: none;">
+                <div class="user-info-header">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=User" id="user-avatar" alt="Avatar">
+                        <span class="role-badge" id="display-role">Пайдаланушы</span>
+                    </div>
+
+                    <div class="name-wrapper"
+                        style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+                        <h2 id="display-name" style="margin: 0;">Аты-жөні</h2>
+                        <img src="pencil_icon.jpg" alt="Edit" class="edit-pencil-icon"
+                            onclick="window.location.href='edit_profile.html'"
+                            style="width: 20px; height: 20px; cursor: pointer; transition: 0.3s;">
+                    </div>
+                    <p id="display-email" style="color: #718096;">example@gmail.com</p>
+                </div>
+
+                <div class="profile-menu">
+                    <p class="menu-label">Жеке деректер</p>
+
+                    <a href="bookings.html" class="menu-item"
+                        style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%; padding: 10px; border: none; background: none; cursor: pointer; text-align: left; font-family: inherit; font-size: 1rem;">
+                        <i class="fas fa-ticket-alt"></i> Менің брондарым
+                    </a>
+
+                    <div id="admin-functions" style="display: block;">
+                        <p class="menu-label">Әкімшілік функциялар</p>
+                        <button class="menu-item admin-btn" onclick="openAddEventModal()">
+                            <i class="fas fa-plus-circle"></i>Жаңа іс-шара қосу
+                        </button>
+                        <button class="menu-item admin-btn" onclick="openCalendarManager()">
+                            <i class="fas fa-calendar-check"></i> Күнтізбені басқару
+                        </button>
+                    </div>
+                    <p class="menu-label">Аккаунт</p>
+                    <button class="menu-item logout-btn" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Шығу
+                    </button>
+                </div>
+            </div>
+            <div style="height: 20px;" aria-hidden="true"></div>
+            <div id="admin-panel"
+                style="display: none; background: #f0f7ff; padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px dashed #3498db;">
+                <h3 class="menu-label" style="color: #2c3e50; margin-top: 0;">Пайдаланушыларды басқару</h3>
+                <div class="search-section" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="email" id="user-search-input" placeholder="Email бойынша іздеу..."
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e0;">
+                    <button class="search-btn" onclick="searchUser()" style="white-space: nowrap;">Іздеу</button>
+                </div>
+                <div id="search-result"></div>
+            </div>
+
+
+        </section>
+    </main>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modal-title"></h3>
+            <div id="modal-content"></div>
+            <button class="register-btn" id="register-btn" onclick="registerEvent()">Тіркелу</button>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+
+    <div id="imageViewer" class="image-viewer" onclick="this.style.display='none'">
+        <span class="close-viewer">&times;</span>
+        <img class="viewer-content" id="fullImage">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+
+</html>

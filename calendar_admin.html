@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQTK Күнтізбе басқару</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-link {
+            color: #000;
+            font-size: 1.5rem;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-arrow {
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .calendar-arrow:hover {
+            background: #2980b9;
+        }
+
+        #current-month-year {
+            margin: 0;
+            min-width: 150px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        .legend-item {
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-item.active-mode {
+            border: 2px solid #f1c40f;
+            background: #fff9c4;
+            color: #f39c12;
+        }
+
+        .full-calendar-grid {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .days-labels-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            background: #f8f9ff;
+            padding: 15px 0;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            color: #5a67d8;
+        }
+
+        .days-labels-grid>div:nth-last-child(2),
+        .days-labels-grid>div:last-child {
+            color: #e74c3c;
+        }
+
+        #calendar-grid-body {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            min-height: 400px;
+        }
+
+        .calendar-day {
+            height: 70px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            border: 2px solid transparent;
+            background: #f8fafc;
+            transition: background-color 0.2s ease;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-color: #3498db;
+        }
+
+        .calendar-day.holiday {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: white;
+            border-color: #f1c40f;
+        }
+
+        .calendar-day.dayoff {
+            background: linear-gradient(135deg, #F87171, #ef4444);
+            color: white;
+            border-color: #F87171;
+        }
+
+        /* 🔥 ПОСТОЯННЫЕ КРАСНЫЕ СУББОТЫ И ВОСКРЕСЕНЬЯ */
+        .calendar-day.permanent-weekend {
+            background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+            color: white !important;
+            border-color: #e74c3c !important;
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+
+        .day-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .save-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .main-auth-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 200px;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .main-auth-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #1f5f8b);
+        }
+
+        @media (max-width: 768px) {
+            .calendar-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .calendar-legend {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .full-calendar-grid {
+                padding: 15px;
+            }
+
+            #calendar-grid-body {
+                gap: 5px;
+                min-height: 350px;
+            }
+
+            .calendar-day {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="admin-calendar-section" class="page">
+        <div class="calendar-header">
+            <a href="index.html" class="back-link" title="Басты бетке оралу">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="calendar-arrow" onclick="changeMonth(-1)" title="Алдыңғы ай">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h2 id="current-month-year"></h2>
+                <button class="calendar-arrow" onclick="changeMonth(1)" title="Келесі ай">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="calendar-legend">
+                <span id="mode-holiday" class="legend-item active-mode" onclick="setCalendarMode('holiday')">
+                    <i class="fas fa-square" style="color: #f1c40f;"></i> Мереке
+                </span>
+                <span id="mode-dayoff" class="legend-item" onclick="setCalendarMode('dayoff')">
+                    <i class="fas fa-square" style="color: #F87171;"></i> Демалыс
+                </span>
+            </div>
+        </div>
+
+        <div class="full-calendar-grid">
+            <div class="days-labels-grid">
+                <div>Дс</div>
+                <div>Сс</div>
+                <div>Ср</div>
+                <div>Бс</div>
+                <div>Жм</div>
+                <div style="color: #e74c3c;">Сн</div>
+                <div style="color: #e74c3c;">Жс</div>
+            </div>
+            <div id="calendar-grid-body"></div>
+        </div>
+
+        <div class="save-section">
+            <button class="main-auth-btn" onclick="saveCalendarChanges()">
+                <i class="fas fa-save"></i> Сақтау
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentDate = new Date(2026, 2, 17); // 17 марта 2026 - вторник
+        let currentMode = 'holiday';
+        let calendarData = {};
+
+        const monthNames = [
+            'Қаңтар', 'Ақпан', 'Наурыз', 'Сәуір', 'Мамыр', 'Маусым',
+            'Шілде', 'Тамыз', 'Қыркүйек', 'Қазан', 'Қараша', 'Желтоқсан'
+        ];
+
+        // 🔥 ТОЧНАЯ ФУНКЦИЯ: Суббота=6, Воскресенье=0
+        function isWeekend(date) {
+            return date.getDay() === 6 || date.getDay() === 0;
+        }
+
+        function initCalendar() {
+            updateMonthYear();
+            renderCalendar();
+        }
+
+        function updateMonthYear() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            document.getElementById('current-month-year').textContent =
+                `${monthNames[month]} ${year}`;
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            updateMonthYear();
+            renderCalendar();
+        }
+
+        function setCalendarMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.legend-item').forEach(item => {
+                item.classList.remove('active-mode');
+            });
+            document.getElementById(`mode-${mode}`).classList.add('active-mode');
+        }
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // Начинаем с ПН (1) недели
+            const firstDay = new Date(year, month, 1);
+            const startDate = new Date(year, month, 1);
+            startDate.setDate(1 - (firstDay.getDay() || 7) + 1); // ПН текущей недели
+
+            const gridBody = document.getElementById('calendar-grid-body');
+            gridBody.innerHTML = '';
+
+            // 6 недель × 7 дней
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+
+                const dayNum = date.getDate();
+                const isCurrentMonth = date.getMonth() === month;
+
+                // 🔥 ГЛАВНАЯ ЛОГИКА - ПРЯМАЯ ПРОВЕРКА ДНЯ НЕДЕЛИ
+                if (isWeekend(date)) {
+                    // Суббота/Воскресенье - КРАСНЫЕ и НЕКЛИКАБЕЛЬНЫЕ
+                    dayElement.classList.add('permanent-weekend');
+                    dayElement.innerHTML = `<div class="day-number">${dayNum}</div>`;
+                } else if (!isCurrentMonth) {
+                    // Другие месяцы - прозрачные
+                    dayElement.style.opacity = '0.4';
+                    dayElement.innerHTML = `<div class="day-number">${dayNum}</div>`;
+                } else {
+                    // Рабочие дни текущего месяца
+                    const isToday = date.toDateString() === new Date().toDateString();
+                    if (isToday) dayElement.classList.add('today');
+
+                    const dayKey = date.toISOString().split('T')[0];
+                    const dayData = calendarData[dayKey];
+
+                    if (dayData?.type === 'holiday') {
+                        dayElement.classList.add('holiday');
+                    } else if (dayData?.type === 'dayoff') {
+                        dayElement.classList.add('dayoff');
+                    }
+
+                    dayElement.innerHTML = `
+                        <div class="day-number">${dayNum}</div>
+                        ${dayData ? `<div style="font-size: 0.7rem; margin-top: 2px;">${dayData.title}</div>` : ''}
+                    `;
+
+                    dayElement.onclick = () => toggleDay(date);
+                }
+
+                gridBody.appendChild(dayElement);
+            }
+        }
+
+        function toggleDay(date) {
+            if (isWeekend(date)) return; // Нельзя!
+
+            const dayKey = date.toISOString().split('T')[0];
+
+            if (calendarData[dayKey]) {
+                delete calendarData[dayKey];
+            } else {
+                calendarData[dayKey] = {
+                    type: currentMode,
+                    title: currentMode === 'holiday' ? 'Мереке' : 'Демалыс',
+                    date: dayKey
+                };
+            }
+
+            renderCalendar();
+        }
+
+        function saveCalendarChanges() {
+            // ✅ ФОРМАТ ДЛЯ MINI-КАЛЕНДАРЯ
+            const holidays = Object.keys(calendarData).filter(key => calendarData[key].type === 'holiday');
+            const daysOff = Object.keys(calendarData).filter(key => calendarData[key].type === 'dayoff');
+
+            localStorage.setItem('calendarHolidays', JSON.stringify(holidays));
+            localStorage.setItem('calendarDaysOff', JSON.stringify(daysOff));
+
+            // ✅ Сразу синхронизация с главной вкладкой
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'calendarHolidays',
+                newValue: JSON.stringify(holidays)
+            }));
+
+            alert('✅ Күнтізбе синхронизацияланды!');
+        }
+
+
+        function loadCalendarData() {
+            const saved = localStorage.getItem('aqtk_calendar');
+            if (saved) {
+                calendarData = JSON.parse(saved);
+            }
+        }
+
+        // ✅ СТАРТ
+        loadCalendarData();
+        initCalendar();
+    </script>
+</body>
+
+</html>

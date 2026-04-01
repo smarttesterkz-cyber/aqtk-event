@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менің брондарым</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="logo.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <style>
+        /* ТВОИ ОРИГИНАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ */
+        body {
+            background-color: #f4f7fe;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+            min-height: 100vh;
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        .back-link {
+            position: absolute;
+            left: 20px;
+            top: 25px;
+            color: #333;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+
+        #bookings-list {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 40px 20px;
+            background: #fafafa;
+            border-radius: 15px;
+            border: 1px dashed #dcdde1;
+        }
+    </style>
+</head>
+
+<!-- ✅ ИСПРАВЛЕНИЕ 1: Добавлен data-page="bookings" -->
+
+<body data-page="bookings">
+    <div class="profile-container">
+        <div class="profile-card">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+
+            <h2 class="page-title">Менің брондарым</h2>
+
+            <div id="bookings-list">
+                <div class="empty-message">
+                    <p>Жүктелуде...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
